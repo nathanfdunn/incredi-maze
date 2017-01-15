@@ -1,2 +1,2 @@
 # maze-generator
-Generates an ASCII maze using the Union-Find algorithm.
+Generates a maze using the Union-Find algorithm and produces an HTML file to draw the maze.

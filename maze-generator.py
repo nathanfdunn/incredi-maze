@@ -1,6 +1,8 @@
 import itertools
 import random
 
+random.seed(27)
+
 class Cell:
     def __init__(self, x, y):
         self.parent = None
@@ -62,29 +64,45 @@ class Maze:
                 edge.remove()
             unprocessedEdges.remove(edge)
 
-    def __str__(self):
-        char = 'X'          # How an edge is drawn
-        grid = [[' ']*2*self.width for y in range(2*self.height)]
-        for coord, edge in self.edges.items():
-            x, y, orientation = coord
+    # def __str__(self):
+    #     char = 'X'          # How an edge is drawn
+    #     grid = [[' ']*2*self.width for y in range(2*self.height)]
+    #     for coord, edge in self.edges.items():
+    #         x, y, orientation = coord
+    #         if edge.isRemoved:
+    #             continue
+    #         if orientation == 'vertical':
+    #             if y-1 >= 0:
+    #                 grid[2*y-1][2*x] = char
+    #             grid[2*y][2*x] = char
+    #             if y+1 < self.height:
+    #                 grid[2*y+1][2*x] = char
+
+    #         else:   # orientation == 'horizontal'
+    #             if x-1 >= 0:
+    #                 grid[2*y][2*x-1] = char
+    #             grid[2*y][2*x] = char
+    #             if x+1 < self.width:
+    #                 grid[2*y][2*x+1] = char
+
+    #     return '\n'.join(''.join(row) for row in grid)
+
+    def resultsToHtml(self):
+        script = ''
+        length = 20
+        for edge in self.edges.values():
             if edge.isRemoved:
                 continue
-            if orientation == 'vertical':
-                if y-1 >= 0:
-                    grid[2*y-1][2*x] = char
-                grid[2*y][2*x] = char
-                if y+1 < self.height:
-                    grid[2*y+1][2*x] = char
+            if edge.orientation == 'vertical':
+                script += f'ctx.moveTo({length*(edge.x+1)}, {length*edge.y});\n'
+                script += f'ctx.lineTo({length*(edge.x+1)}, {length*(edge.y+1)});\n'
+            else:
+                script += f'ctx.moveTo({length*edge.x}, {length*(edge.y+1)});\n'
+                script += f'ctx.lineTo({length*(edge.x+1)}, {length*(edge.y+1)});\n'
 
-            else:   # orientation == 'horizontal'
-                if x-1 >= 0:
-                    grid[2*y][2*x-1] = char
-                grid[2*y][2*x] = char
-                if x+1 < self.width:
-                    grid[2*y][2*x+1] = char
+        template = open('template.html').read()
+        script = template.replace('//template//', script)
+        open('result.html', 'w').write(script)
 
-        return '\n'.join(''.join(row) for row in grid)
-
-
-maze = Maze(15,15)
-print(maze)
+maze = Maze(30, 30)
+maze.resultsToHtml()
