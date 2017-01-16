@@ -93,7 +93,7 @@
 <script type="text/javascript">
 	var player;
 	var target;
-
+// alert('??');
 	function createMaze(width, height){
 
 		var mazeHolder = document.getElementById('maze-holder');
@@ -196,12 +196,15 @@
 
 
 		var documentCells = document.querySelectorAll('.cell');
-		alert(documentCells);
+		// alert(documentCells);
+		console.log(documentCells);
+
 		for (var i=0; i<documentCells.length; i++){
 			var cell = documentCells[i];
-			alert(cell);
-			cell.style.width = Math.floor(100/width + 'vh');
-			cell.style.height = Math.floor(100/height + 'vh');
+			// alert(cell.style);
+			// cell.style.display = "none";
+			cell.style.width = 90/width + 'vw';
+			cell.style.height = 90/height + 'vw';
 		}
 
 	}
