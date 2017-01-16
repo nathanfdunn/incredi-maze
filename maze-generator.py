@@ -64,29 +64,6 @@ class Maze:
                 edge.remove()
             unprocessedEdges.remove(edge)
 
-    # def __str__(self):
-    #     char = 'X'          # How an edge is drawn
-    #     grid = [[' ']*2*self.width for y in range(2*self.height)]
-    #     for coord, edge in self.edges.items():
-    #         x, y, orientation = coord
-    #         if edge.isRemoved:
-    #             continue
-    #         if orientation == 'vertical':
-    #             if y-1 >= 0:
-    #                 grid[2*y-1][2*x] = char
-    #             grid[2*y][2*x] = char
-    #             if y+1 < self.height:
-    #                 grid[2*y+1][2*x] = char
-
-    #         else:   # orientation == 'horizontal'
-    #             if x-1 >= 0:
-    #                 grid[2*y][2*x-1] = char
-    #             grid[2*y][2*x] = char
-    #             if x+1 < self.width:
-    #                 grid[2*y][2*x+1] = char
-
-    #     return '\n'.join(''.join(row) for row in grid)
-
     def resultsToHtml(self):
         script = ''
         length = 20
