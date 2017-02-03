@@ -1,11 +1,72 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Incredi-maze</title>
+	<title>Incredi-Maze</title>
+	<style type="text/css">
+		
+		#controls {
+			margin: 0 auto;
+		}
+		
+		button {
+			font-size: 10vh;
+		}
+
+		#maze {
+			display: table;
+			margin: 0 auto;
+		}
+
+		.maze-row {
+			display: table-row;
+		}
+
+		.cell {
+			display: table-cell;
+			background-color: #fff;
+		}
+
+		.cell[data-player="true"]:before {
+			border-radius: 50%;
+			background-color: blue;
+			width: 90%;
+			height: 90%;
+			content: "";
+			position: relative;
+			display: inline-block;
+		}
+
+		.cell[data-target="true"]:after {
+			border-radius: 50%;
+			background-color: red;
+			width: 90%;
+			height: 90%;
+			content: "";
+			position: relative;
+			display: inline-block;
+		}
+
+		[data-right-wall="true"] {
+			border-right: solid #000;
+		}
+		[data-bottom-wall="true"] {
+			border-bottom: solid #000;
+		}
+
+		[data-top-filler="true"] {
+			border-top: solid #000;
+		}
+		[data-left-filler="true"] {
+			border-left: solid #000;
+		}
+
+	</style>
 </head>
 <body>
+
 <div id="maze-holder"></div>
 
+<!-- Using table for layout oh noes! -->
 <table id="controls">
 	<tr>
 		<td></td>
@@ -19,81 +80,16 @@
 	</tr>
 </table>
 
-<!-- <form id="make-new-maze" onsubmit="createMaze(10,10);return false"> -->
 <form id="make-new-maze" onsubmit="createMaze(this.dimension.value, this.dimension.value);return false">
 	<label for="dimension">Size of maze</label>
 	<input type="text" name="dimension" id="dimension" value="10">
 	<input type="submit" name="" value="Make new maze!">
 </form>
 
-<style type="text/css">
-	
-	#controls {
-		margin: 0 auto;
-	}
-	
-	button {
-		font-size: 10vh;
-	}
-
-	#maze {
-		display: table;
-		margin: 0 auto;
-	}
-
-	.maze-row {
-		display: table-row;
-	}
-
-	.cell {
-		display: table-cell;
-		background-color: #fff;
-
-		/*width: 5vh;*/
-		/*height: 5vh;*/
-	}
-
-	.cell[data-player="true"]:before {
-		border-radius: 1000vw;		/*perfectly round corners*/
-		background-color: blue;
-		width: 90%;
-		height: 90%;
-
-		content: "";
-		position: relative;
-		display: inline-block;
-	}
-
-	.cell[data-target="true"]:after {
-		border-radius: 1000vw;		/*perfectly round corners*/
-		background-color: red;
-		width: 90%;
-		height: 90%;
-
-		content: "";
-		position: relative;
-		display: inline-block;
-	}
-
-	[data-right-wall="true"] {
-		border-right: solid #000;
-	}
-	[data-bottom-wall="true"] {
-		border-bottom: solid #000;
-	}
-
-	[data-top-filler="true"] {
-		border-top: solid #000;
-	}
-	[data-left-filler="true"] {
-		border-left: solid #000;
-	}
-
-</style>
 <script type="text/javascript">
 	var player;
 	var target;
-// alert('??');
+
 	function createMaze(width, height){
 
 		var mazeHolder = document.getElementById('maze-holder');
@@ -167,9 +163,7 @@
 			edges.push(leftEdge);
 		}
 
-		//TODO finish with the bottom edge and left edge
 		while (edges.length > 0){
-			// alert(edges.length);
 			var index = Math.floor(edges.length*Math.random());
 			var edge = edges[index];
 			var cellA = edge[0];
@@ -180,29 +174,22 @@
 				// Therefore cellA needs to have its class updated
 				if (cellA.getAttribute('data-x-loc') == cellB.getAttribute('data-x-loc')){		// Must be a horizontal wall
 					cellA.removeAttribute('data-bottom-wall');
-				} else {
+				} else {	// Must be a vertical wall
 					cellA.removeAttribute('data-right-wall');
 				}
 			}
 			edges.splice(index, 1);
 		}
 
-
 		player = getRandomCell();
 		player.setAttribute('data-player', true);
-		// alert(pl)
+
 		target = getRandomCell();
 		target.setAttribute('data-target', true);
 
-
 		var documentCells = document.querySelectorAll('.cell');
-		// alert(documentCells);
-		console.log(documentCells);
-
 		for (var i=0; i<documentCells.length; i++){
 			var cell = documentCells[i];
-			// alert(cell.style);
-			// cell.style.display = "none";
 			cell.style.width = 90/width + 'vw';
 			cell.style.height = 90/height + 'vw';
 		}
@@ -213,17 +200,6 @@
 	var height = 10;
 	createMaze(width, height);
 
-	// function makeNewMaze(dimension){
-	// 	width = height = dimension;
-	// 	createMaze(width, height);
-
-	// 	var player = getRandomCell();
-	// 	player.setAttribute('data-player', true);
-	// 	// alert(pl)
-	// 	var target = getRandomCell();
-	// 	target.setAttribute('data-target', true);
-	// }
-
 	function getCellAt(x, y){
 		return document.querySelector('[data-x-loc="'+x+'"][data-y-loc="'+y+'"]');
 	}
@@ -231,11 +207,8 @@
 	function getRandomCell(){
 		var x = Math.floor(width*Math.random());
 		var y = Math.floor(height*Math.random());
-		// alert(x + ',' + y);
-		// return document.querySelector('[data-x-loc="'+x+'"][data-y-loc="'+y+'"]');
 		return getCellAt(x, y);
 	}
-
 
 	function movePlayer(x, y){
 		player.removeAttribute('data-player');
@@ -254,35 +227,57 @@
 		target.setAttribute('data-target', true);
 	}
 
-	// assumes one will be 0 and one will be +-1
+	// Effectively, x = sgn(x), y = sgn(y)
 	function tryMovePlayer(x, y){
 		var curX = 1*player.getAttribute('data-x-loc');
 		var curY = 1*player.getAttribute('data-y-loc');
 
-		if (x != 0) {
-			if (x > 0) {
-				if (!player.getAttribute('data-right-wall')){
-					movePlayer(curX + 1, curY);
-				}
-			} else {	// if (x < 0)
-				var cellToLeft = getCellAt(curX-1, curY);
-				if (cellToLeft !== null && !cellToLeft.getAttribute('data-right-wall')){
-					movePlayer(curX - 1, curY);
-				}
+		if (x > 0) {
+			if (!player.getAttribute('data-right-wall')){
+				movePlayer(curX + 1, curY);
 			}
-		} else if (y != 0){
-			if (y > 0) {
-				if (!player.getAttribute('data-bottom-wall')){
-					movePlayer(curX, curY+1);
-				}
-			} else {	// if (y < 0)
-				var cellAbove = getCellAt(curX, curY-1);
-				if (cellAbove !== null && !cellAbove.getAttribute('data-bottom-wall')){
-					movePlayer(curX, curY-1);
-				}
+		} else if (x < 0) {
+			var cellToLeft = getCellAt(curX-1, curY);
+			if (cellToLeft !== null && !cellToLeft.getAttribute('data-right-wall')){
+				movePlayer(curX - 1, curY);
 			}
-		}
+		} //else do nothing
+
+		if (y > 0) {
+			if (!player.getAttribute('data-bottom-wall')){
+				movePlayer(curX, curY+1);
+			}
+		} else if (y < 0) {
+			var cellAbove = getCellAt(curX, curY-1);
+			if (cellAbove !== null && !cellAbove.getAttribute('data-bottom-wall')){
+				movePlayer(curX, curY-1);
+			}
+		} //else do nothing
 	}
+
+	// Set up arrow keys and wasd to move player
+	document.addEventListener('keydown', function(e){
+		switch(e.keyCode){
+			case 37: 			//left
+			case 65: 			//'a'
+				tryMovePlayer(-1, 0);
+				break;
+			case 39: 			//right
+			case 68: 			//'d'
+				tryMovePlayer(1, 0);
+				break;
+			case 38: 			//up
+			case 87: 			//'w'
+				tryMovePlayer(0, -1);
+				break;
+			case 40: 			//down
+			case 83: 			//'s'
+				tryMovePlayer(0, 1);
+				break;
+		}
+	});
+
 </script>
+
 </body>
 </html>
