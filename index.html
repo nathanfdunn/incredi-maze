@@ -190,8 +190,10 @@
 		var documentCells = document.querySelectorAll('.cell');
 		for (var i=0; i<documentCells.length; i++){
 			var cell = documentCells[i];
-			cell.style.width = 90/width + 'vw';
-			cell.style.height = 90/height + 'vw';
+			// cell.style.width = 90/width + 'vw';
+			cell.style.width = 90/width + 'vmin';
+			// cell.style.height = 90/height + 'vw';
+			cell.style.height = 90/height + 'vmin';
 		}
 
 	}
