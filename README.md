@@ -1,2 +1,8 @@
-# maze-generator
-Generates a maze using the Union-Find algorithm and produces an HTML file to draw the maze.
+# incredi-maze
+A webpage that generates a maze using the Union-Find algorithm.
+
+Help the blue dot get to the red dot.
+
+[http://incredi-maze.herokuapp.com/](Try it on Heroku.)
+
+![An example of incredi-maze](incredi-maze.png)
